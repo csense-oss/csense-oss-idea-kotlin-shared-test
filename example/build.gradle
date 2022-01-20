@@ -1,0 +1,42 @@
+import org.gradle.api.tasks.testing.logging.TestExceptionFormat
+
+plugins {
+    //https://github.com/JetBrains/gradle-intellij-plugin
+    id "org.jetbrains.intellij" version "1.3.1"
+    id 'org.jetbrains.kotlin.jvm' version '1.6.10'
+    id 'java'
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+    maven {
+        setUrl("https://pkgs.dev.azure.com/csense-oss/csense-oss/_packaging/csense-oss/maven/v1")
+        name = "Csense oss"
+    }
+}
+
+dependencies {
+    testImplementation("junit:junit:4.13.2")
+    testImplementation("csense.idea.test:csense-idea-test:0.1.0")
+}
+
+intellij {
+    updateSinceUntilBuild = false
+    plugins = ["Kotlin", "java"]
+    version = "2020.3"
+}
+patchPluginXml {
+    changeNotes = """
+      Add change notes here.<br>
+      <em>most HTML tags may be used</em>"""
+}
+test {
+    testLogging {
+        showExceptions = true
+        showStackTraces = true
+        exceptionFormat = TestExceptionFormat.FULL
+    }
+}

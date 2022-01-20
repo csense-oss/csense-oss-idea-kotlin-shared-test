@@ -1,0 +1,55 @@
+apply plugin: "maven-publish"
+
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = csenseGroupId
+            artifactId = csenseArtifactId
+            version = csenseVersionName
+            from components.kotlin
+            artifact sourcesJar
+            pom {
+                name = csenseArtifactId
+                description = csenseArtifactDescription
+                url = csenseWebsite
+
+                licenses {
+                    license {
+                        name = csenseLicense
+                        url = csenseLicenseUrl
+                    }
+                }
+                developers {
+                    developer {
+                        id = csenseDeveloperAlias
+                        name = csenseDeveloperName
+                        email = csenseDeveloperEmail
+                    }
+                }
+                organization {
+                    name = csenseUserOrg
+                }
+            }
+        }
+    }
+    repositories {
+        maven {
+            final Properties properties = new Properties()
+            try {
+                properties.load(project.rootProject.file("local.properties").newDataInputStream())
+            } catch (Exception) {
+
+            }
+            url 'https://pkgs.dev.azure.com/csense-oss/csense-oss/_packaging/csense-oss/maven/v1'
+            name 'csense-oss'
+            credentials {
+                username = properties.getProperty("username", "")
+                password = properties.getProperty("password", "")
+            }
+            authentication {
+                basic(BasicAuthentication)
+            }
+        }
+    }
+}

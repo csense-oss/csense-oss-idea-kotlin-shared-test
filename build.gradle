@@ -1,0 +1,58 @@
+plugins {
+    id 'org.jetbrains.kotlin.jvm' version '1.6.10'
+    id "maven-publish"
+    id "java"
+}
+
+
+ext.csenseUserOrg = "csense-oss"
+ext.csenseGit = "https://github.com/csense-oss/idea-kotlin-shared-base.git"
+ext.csenseLicense = "MIT"
+ext.csenseLicenseUrl = "https://mit-license.org/"
+
+ext.csenseArtifactId = "csense-idea-test"
+ext.csenseGroupId = "csense.idea.test"
+ext.csenseVersionName = "0.1.0"
+ext.csenseDeveloperAlias = "tvede-dk"
+ext.csenseDeveloperName = "Kasper Tvede"
+ext.csenseDeveloperEmail = "csenseoss@tvedesys.dk"
+
+ext.csenseArtifactDescription = ""
+ext.csenseWebsite = "https://github.com/csense-oss/idea-kotlin-shared-test"
+
+project.group = ext.csenseArtifactId
+project.version = ext.csenseVersionName
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation("junit:junit:4.13.2")
+    //extracted from the maven artifact of intellij ce/ the dir names.
+    //eg your local maven: <localuser>/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2020.3/
+    implementation fileTree(include: ['*.jar'], dir: 'libs/idea/')
+    implementation fileTree(include: ['*.jar'], dir: 'libs/idea/ant/lib')
+    implementation fileTree(include: ['*.jar'], dir: 'libs/idea/cds/')
+    implementation fileTree(include: ['*.jar'], dir: 'libs/java/')
+    implementation fileTree(include: ['*.jar'], dir: 'libs/kotlin/')
+}
+
+
+compileKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+compileTestKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+
+kotlin.sourceSets.all {
+    languageSettings.progressiveMode = true
+}
+
+task sourcesJar(type: Jar) {
+    archiveClassifier.set("sources")
+    from sourceSets.main.allSource
+}
+
+apply from: "$rootDir/gradle/publish.gradle"
