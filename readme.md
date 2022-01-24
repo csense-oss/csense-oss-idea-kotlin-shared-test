@@ -104,3 +104,19 @@ Most is copy and paste from https://github.com/JetBrains/intellij-community so t
 trademarked Jetbrains. (the original file copyright has been included in each file even after modifying it to preserve
 the license)
 
+
+
+### other noteworthy things
+the xml format for these test-fixtures does not allow whitespace, and will create some very obscured error messages.
+
+valid
+```
+<warning descr="wee desc here">code</warning>
+```
+
+invalid
+```
+<warning descr ="wee desc here">code</warning>
+```
+(notice the space after descr).
+
