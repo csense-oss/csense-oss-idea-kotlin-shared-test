@@ -1,5 +1,5 @@
 plugins {
-    id 'org.jetbrains.kotlin.jvm' version '1.6.10'
+    id 'org.jetbrains.kotlin.jvm' version '1.8.0'
     id "maven-publish"
     id "java"
 }
@@ -12,7 +12,7 @@ ext.csenseLicenseUrl = "https://mit-license.org/"
 
 ext.csenseArtifactId = "csense-idea-test"
 ext.csenseGroupId = "csense.idea.test"
-ext.csenseVersionName = "0.1.0"
+ext.csenseVersionName = "0.2.0"
 ext.csenseDeveloperAlias = "tvede-dk"
 ext.csenseDeveloperName = "Kasper Tvede"
 ext.csenseDeveloperEmail = "csenseoss@tvedesys.dk"
@@ -30,20 +30,25 @@ repositories {
 dependencies {
     implementation("junit:junit:4.13.2")
     //extracted from the maven artifact of intellij ce/ the dir names.
-    //eg your local maven: <localuser>/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2020.3/
+    //eg your local maven: <localUser>/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2021.3/ (then the folder with the full code of IDEA)
+    // then the lib folder (idea's lib folder)
     implementation fileTree(include: ['*.jar'], dir: 'libs/idea/')
     implementation fileTree(include: ['*.jar'], dir: 'libs/idea/ant/lib')
     implementation fileTree(include: ['*.jar'], dir: 'libs/idea/cds/')
+
+    //then the plugins/java/lib folder (without sub-folders)
     implementation fileTree(include: ['*.jar'], dir: 'libs/java/')
+
+    //then the plugins/kotlin/lib folder (without sub-folders)
     implementation fileTree(include: ['*.jar'], dir: 'libs/kotlin/')
 }
 
 
 compileKotlin {
-    kotlinOptions.jvmTarget = "1.8"
+    kotlinOptions.jvmTarget = "11"
 }
 compileTestKotlin {
-    kotlinOptions.jvmTarget = "1.8"
+    kotlinOptions.jvmTarget = "11"
 }
 
 kotlin.sourceSets.all {
