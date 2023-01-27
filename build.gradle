@@ -1,7 +1,5 @@
 plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.8.0'
-    id "maven-publish"
-    id "java"
 }
 
 
@@ -12,7 +10,7 @@ ext.csenseLicenseUrl = "https://mit-license.org/"
 
 ext.csenseArtifactId = "csense-idea-test"
 ext.csenseGroupId = "csense.idea.test"
-ext.csenseVersionName = "0.2.0"
+ext.csenseVersionName = "0.3.0"
 ext.csenseDeveloperAlias = "tvede-dk"
 ext.csenseDeveloperName = "Kasper Tvede"
 ext.csenseDeveloperEmail = "csenseoss@tvedesys.dk"
@@ -44,20 +42,22 @@ dependencies {
 }
 
 
-compileKotlin {
-    kotlinOptions.jvmTarget = "11"
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(11))
+    }
+    withJavadocJar()
+    withSourcesJar()
 }
-compileTestKotlin {
-    kotlinOptions.jvmTarget = "11"
+
+kotlin {
+    jvmToolchain {
+        languageVersion.set(JavaLanguageVersion.of(11))
+    }
 }
 
 kotlin.sourceSets.all {
     languageSettings.progressiveMode = true
-}
-
-task sourcesJar(type: Jar) {
-    archiveClassifier.set("sources")
-    from sourceSets.main.allSource
 }
 
 apply from: "$rootDir/gradle/publish.gradle"
